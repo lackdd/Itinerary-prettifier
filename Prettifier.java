@@ -13,6 +13,11 @@ public class Prettifier {
         String database = args[2];
         String[] tokens = scanInput(input);
         ArrayList<ArrayList<String>> data = scanDatabase(database);
+        tokens = convertToAirportNames(tokens, data);
+        writeToFile(output, tokens);
+    }
+
+    public static String[] convertToAirportNames(String[] tokens, ArrayList<ArrayList<String>> data) {
         if (tokens.length > 0) {
             for (int i = 0; i < tokens.length; i++) {
                 if (tokens[i].charAt(0) == '#') {
@@ -37,7 +42,7 @@ public class Prettifier {
         } else {
             System.out.println("No data found in input.txt");
         }
-        writeToFile(output, tokens);
+        return tokens;
     }
 
     public static String[] scanInput(String input) {

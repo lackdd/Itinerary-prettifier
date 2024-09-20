@@ -8,6 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Prettifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/Prettifier.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Prettifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/Prettifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +74,7 @@
       <workItem from="1726824472386" duration="380000" />
       <workItem from="1726824862980" duration="992000" />
       <workItem from="1726827262274" duration="6302000" />
-      <workItem from="1726835871968" duration="17955000" />
+      <workItem from="1726835871968" duration="19138000" />
     </task>
     <servers />
   </component>
