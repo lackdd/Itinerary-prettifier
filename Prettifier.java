@@ -90,9 +90,6 @@ public class Prettifier {
                 }
             }
         }
-        /*for (ArrayList<String> group : groups) {
-            System.out.println(group);
-        }*/
         return groups;
     }
 
