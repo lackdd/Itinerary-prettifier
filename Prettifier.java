@@ -11,6 +11,7 @@ public class Prettifier {
     public static final String green_bold = "\u001B[1;32m";
     public static final String red = "\u001B[31m";
     public static final String reset = "\u001B[0m";
+
     public static void main(String[] args) {
         if ((args[0].equals("-h") && args.length > 0) || args.length != 3) {
             printUsage();
