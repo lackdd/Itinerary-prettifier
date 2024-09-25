@@ -9,7 +9,7 @@
       <change beforePath="$PROJECT_DIR$/Prettifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/Prettifier.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Prettifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/Prettifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputt.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +93,7 @@
       <workItem from="1727092795758" duration="16173000" />
       <workItem from="1727117525608" duration="1223000" />
       <workItem from="1727168176883" duration="35055000" />
-      <workItem from="1727254846367" duration="6451000" />
+      <workItem from="1727254846367" duration="7626000" />
     </task>
     <servers />
   </component>

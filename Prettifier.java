@@ -176,6 +176,57 @@ public class Prettifier {
     public static String[] convertToAirportNames(String[] tokens, ArrayList<String[]> data) {
         if (tokens.length > 0) {
             for (int i = 0; i < tokens.length; i++) {
+                if (!tokens[i].isEmpty() && tokens[i].charAt(0) == '*') {
+                    if (tokens[i].charAt(1) == '#') {
+                        if (tokens[i].charAt(2) == '#') {
+                            tokens[i] = tokens[i].substring(3);
+                            boolean comma = false;
+                            boolean dot = false;
+                            if (tokens[i].endsWith(".")) {
+                                dot = true;
+                                tokens[i] = tokens[i].replace(".", "");
+                            }
+                            if (tokens[i].endsWith(",")) {
+                                comma = true;
+                                tokens[i] = tokens[i].replace(",", "");
+                            }
+                            for (int k = 1; k < data.size(); k++) {
+                                if (tokens[i].equals(data.get(k)[3])) {
+                                    tokens[i] = data.get(k)[2];
+                                    if (comma) {
+                                        tokens[i] += ",";
+                                    }
+                                    if (dot) {
+                                        tokens[i] += ".";
+                                    }
+                                }
+                            }
+                        } else {
+                            tokens[i] = tokens[i].substring(2);
+                            boolean comma = false;
+                            boolean dot = false;
+                            if (tokens[i].endsWith(".")) {
+                                dot = true;
+                                tokens[i] = tokens[i].replace(".", "");
+                            }
+                            if (tokens[i].endsWith(",")) {
+                                comma = true;
+                                tokens[i] = tokens[i].replace(",", "");
+                            }
+                            for (int k = 1; k < data.size(); k++) {
+                                if (tokens[i].equals(data.get(k)[4])) {
+                                    tokens[i] = data.get(k)[2];
+                                    if (comma) {
+                                        tokens[i] += ",";
+                                    }
+                                    if (dot) {
+                                        tokens[i] += ".";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 if (!tokens[i].isEmpty() && tokens[i].charAt(0) == '#') {
                     if (tokens[i].charAt(1) == '#') {
                         tokens[i] = tokens[i].substring(2);
@@ -231,7 +282,7 @@ public class Prettifier {
         }
         return tokens;
     }
-    // \v\f\r
+
     public static ArrayList<String[]> scanInput(String input) {
         ArrayList<String[]> tokenList = new ArrayList<>();
         try {

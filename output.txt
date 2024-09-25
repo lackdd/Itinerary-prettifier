@@ -1,4 +1,4 @@
-Your flight departs from Hannover Airport, and your destination is Bremen Airport.
+Your flight departs from Hannover, and your destination is Bremen.
 
 1. 09 May 2022
 2. 07:18PM (-02:00)
