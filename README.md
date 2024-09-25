@@ -1,53 +1,82 @@
-### Prettifier Program Overview
+* * *
 
-The `Prettifier` program processes data from an input file (`input.txt`), performs transformations based on a database lookup file (`airport-lookup.csv`), and outputs formatted data to an output file (`output.txt`). Let's go through each part:
+### Itinerary-Prettifier
 
-#### Input Example (`input.txt`)
+#### Functional Requirements
 
-```
-Your flight departs from *#HAJ, and your destination is *##EDDW.
+**Input:** Path to the input file containing the text-based itinerary.
 
-1. D(2022-05-09T08:07Z)
-2. T12(2069-04-24T19:18-02:00)
-3. T12(2080-05-04T14:54Z)
-4. T12(1980-02-17T03:30+11:00)
-5. T12(2029-09-04T03:09Z)
-6. T24(2032-07-17T04:08+13:00)
-7. T24(2084-04-13T17:54Z)
-8. T24(2024-07-23T15:29-11:00)
-9. T24(2042-09-01T21:43Z)
-```
-```
+**Output:** Path to the output file where the prettified itinerary will be written.
 
-### Explanation
+**Airport Lookup:** Path to a CSV file (`airport-lookup.csv`) containing airport data for converting codes to names. Supports dynamic column order and city name lookup.
 
-1.  **Input Parsing (`scanInput` method)**:
-    
-    *   Reads the contents of `input.txt`, splits lines into tokens, and stores them for further processing.
-2.  **Database Lookup (`scanDatabase` method)**:
-    
-    *   Reads `airport-lookup.csv`, parses it into data rows, and builds a mapping (`columnMap`) for quick lookup of airport details.
-3.  **Token Transformation (`convertToAirportNames` method)**:
-    
-    *   Replaces tokens prefixed with `*#` or `*##` with corresponding airport names using data from the database lookup.
-4.  **Date/Time Formatting (`convertToReadableTime` method)**:
-    
-    *   Converts tokens prefixed with `D` or `T12`/`T24` into readable date/time formats:
-        *   Dates are formatted as `Month Day Year HH:MM`.
-        *   Times are converted to 12-hour format with AM/PM and adjusted for time zones.
-5.  **Error Handling (`isDatabaseMalformed` method)**:
-    
-    *   Checks if the database lookup file is malformed based on expected structure and non-empty fields.
-6.  **Output (`writeToFile` method)**:
-    
-    *   Writes the processed lines into `output.txt` and prints formatted output to the console in blue color.
-
-### Usage
-
-To run the program:
+**Usage:**
 
 ```bash
-$ java Prettifier ./input.txt ./output.txt ./airport-lookup.csv
+$ java Prettifier.java ./input.txt ./output.txt ./airport-lookup.csv
 ```
 
-This will process `input.txt`, apply transformations using `airport-lookup.csv`, and save formatted output to `output.txt`.
+**Help Flag (`-h`):**
+
+```bash
+$ java Prettifier.java -h
+itinerary usage:
+$ java Prettifier.java ./input.txt ./output.txt ./airport-lookup.csv
+```
+
+#### Features
+
+1.  **Airport Names Conversion:**
+    
+    *   Converts IATA (`#LAX`) and ICAO (`##EGLL`) airport codes to corresponding airport names using the provided CSV lookup.
+    *   Supports dynamic column order in the airport lookup CSV.
+2.  **City Names Conversion:**
+    
+    *   Optionally converts city names using `*` symbol prefixed codes (e.g., `*#LHR` -> "London").
+3.  **Date and Time Formatting:**
+    
+    *   Formats dates (`D(...)`) as `DD-Mmm-YYYY` (e.g., `05 Apr 2007`).
+    *   Formats 12-hour times (`T12(...)`) as `12:30PM (-02:00)` and 24-hour times (`T24(...)`) as `12:30 (-02:00)`.
+    *   Handles "Zulu time" (`Z`) as `(00:00)`.
+4.  **Whitespace Trimming:**
+    
+    *   Converts vertical whitespace characters (`\v`, `\f`, `\r`) to newline characters (`\n`).
+    *   Ensures no more than two consecutive blank lines.
+5.  **Error Handling:**
+    
+    *   Displays usage if incorrect number of arguments provided.
+    *   Checks for existence and validity of input files.
+    *   Validates airport lookup file structure and content integrity.
+    *   Prevents creation of output file on error conditions.
+6.  **Additional Features:**
+    
+    *   Supports formatting enhancements for output to stdout (optional).
+    *   Highlights specific information like dates, times, offsets, airport names, and cities using color and formatting (optional).
+
+#### Example
+
+**Input (`input.txt`):**
+
+```
+Flight Itinerary
+Departure: #JFK at D(2023-09-25T08:00-04:00)
+Arrival: ##LHR at T12(2023-09-25T18:30Z)
+
+Connecting Flight:
+Departure: *#LAX at D(2023-09-25T20:00-07:00)
+Arrival: ##SIN at T24(2023-09-26T06:00+08:00)
+```
+
+**Output (`output.txt`):**
+
+```
+Flight Itinerary
+Departure: New York (JFK) at 25-Sep-2023 08:00AM (-04:00)
+Arrival: London Heathrow (LHR) at 25-Sep-2023 06:30PM (00:00)
+
+Connecting Flight:
+Departure: Los Angeles at 25-Sep-2023 08:00PM (-07:00)
+Arrival: Singapore (SIN) at 26-Sep-2023 06:00 (+08:00)
+```
+
+* * *
