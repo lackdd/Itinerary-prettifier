@@ -332,7 +332,7 @@ public class Prettifier {
                 String headerLine = scanner.nextLine();
                 String[] headers = headerLine.split(",");
                 for (int i = 0; i < headers.length; i++) {
-                    columnMap.put(headers[i].trim().toLowerCase(), i);
+                    columnMap.put(headers[i].trim().toLowerCase().replaceAll("\"", ""), i);
                 }
             }
             while (scanner.hasNextLine()) {
@@ -346,13 +346,13 @@ public class Prettifier {
                         if (c == '"') {
                             inQuotes = !inQuotes;
                         } else if (c == ',' && !inQuotes) {
-                            tokens.add(currentToken.toString().trim());
+                            tokens.add(currentToken.toString().trim().replaceAll("\"", ""));
                             currentToken.setLength(0);
                         } else {
                             currentToken.append(c);
                         }
                     }
-                    tokens.add(currentToken.toString().trim());
+                    tokens.add(currentToken.toString().trim().replaceAll("\"", ""));
                     data.add(tokens.toArray(new String[0]));
                 }
             }
