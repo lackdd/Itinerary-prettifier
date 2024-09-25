@@ -17,21 +17,6 @@ Your flight departs from *#HAJ, and your destination is *##EDDW.
 8. T24(2024-07-23T15:29-11:00)
 9. T24(2042-09-01T21:43Z)
 ```
-
-#### Output Example (Markdown Format)
-
-```
-Your flight departs from Honiara, and your destination is Hamburg.
-
-1. May 9 2022 08:07
-2. Apr 24 2069 07:18 PM (-02:00)
-3. May 4 2080 14:54
-4. Feb 17 1980 03:30 PM (+11:00)
-5. Sep 4 2029 03:09
-6. Jul 17 2032 04:08 AM (+13:00)
-7. Apr 13 2084 17:54
-8. Jul 23 2024 03:29 PM (-11:00)
-9. Sep 1 2042 21:43
 ```
 
 ### Explanation
