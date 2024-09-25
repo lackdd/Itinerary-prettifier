@@ -48,6 +48,7 @@ public class Prettifier {
         System.out.println("itinerary usage:");
         System.out.println("$ java Prettifier.java ./input.txt ./output.txt ./airport-lookup.csv");
     }
+
     public static String[] convertToReadableTime(String[] tokens) {
         for (int i = 0; i < tokens.length; i++) {
             ArrayList<String> newFormats = new ArrayList<>();
@@ -125,10 +126,13 @@ public class Prettifier {
                 newFormats.add(timezone);
                 newFormat = String.join(" ", newFormats);
                 boolean isDateMalformed = true;
-                if (tokens[i].charAt(15) >= '0' && tokens[i].charAt(15) <= '1' && tokens[i].charAt(16) >= '0' && tokens[i].charAt(16) <= '9' && tokens[i].charAt(17) == ':' && tokens[i].charAt(18) >= '0' && tokens[i].charAt(18) <= '5' && tokens[i].charAt(19) >= '0' && tokens[i].charAt(19) <= '9') {
+                if (tokens[i].charAt(15) >= '0' && tokens[i].charAt(15) <= '2' && tokens[i].charAt(16) >= '0' && tokens[i].charAt(16) <= '9' && tokens[i].charAt(17) == ':' && tokens[i].charAt(18) >= '0' && tokens[i].charAt(18) <= '5' && tokens[i].charAt(19) >= '0' && tokens[i].charAt(19) <= '9') {
                     if (tokens[i].charAt(20) == 'Z' || (tokens[i].charAt(21) >= '0' && tokens[i].charAt(21) <= '1' && tokens[i].charAt(22) >= '0' && tokens[i].charAt(22) <= '9' &&
                             tokens[i].charAt(23) == ':' && tokens[i].charAt(24) == '0' && tokens[i].charAt(25) == '0')) {
                         isDateMalformed = false;
+                        if (tokens[i].charAt(15) == '2' && tokens[i].charAt(16) >= '4' && tokens[i].charAt(16) <= '9') {
+                            isDateMalformed = true;
+                        }
                     }
                 }
                 if (isDateMalformed) {
@@ -155,6 +159,9 @@ public class Prettifier {
                     if (tokens[i].charAt(20) == 'Z' || (tokens[i].charAt(21) >= '0' && tokens[i].charAt(21) <= '1' && tokens[i].charAt(22) >= '0' && tokens[i].charAt(22) <= '9' &&
                             tokens[i].charAt(23) == ':' && tokens[i].charAt(24) == '0' && tokens[i].charAt(25) == '0')) {
                         isDateMalformed = false;
+                        if (tokens[i].charAt(15) == '2' && tokens[i].charAt(16) >= '4' && tokens[i].charAt(16) <= '9') {
+                            isDateMalformed = true;
+                        }
                     }
                 }
                 if (isDateMalformed) {
@@ -224,21 +231,25 @@ public class Prettifier {
         }
         return tokens;
     }
-
+    // \v\f\r
     public static ArrayList<String[]> scanInput(String input) {
         ArrayList<String[]> tokenList = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(input))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+        try {
+            String fileContent = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(input)));
+            fileContent = fileContent.replaceAll("\r\n", "\n");
+            fileContent = fileContent.replaceAll("[\u000B\u000C]", "\n");
+            fileContent = fileContent.replaceAll("\n{3,}", "\n\n");
+            String[] lines = fileContent.split("\n");
+            for (String line : lines) {
                 if (line.trim().isEmpty()) {
-                    tokenList.add(new String[] { "" });
+                    tokenList.add(new String[]{""});
                 } else {
                     String[] tokens = line.trim().split("[\\s]");
                     tokenList.add(tokens);
                 }
-
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+
             e.printStackTrace();
         }
         return tokenList;
@@ -254,7 +265,7 @@ public class Prettifier {
                     ArrayList<String> tokens = new ArrayList<>();
                     boolean inQuotes = false;
                     StringBuilder currentToken = new StringBuilder();
-                    for(int i = 0; i < line.length(); i++) {
+                    for (int i = 0; i < line.length(); i++) {
                         char c = line.charAt(i);
                         if (c == '"') {
                             inQuotes = !inQuotes;
