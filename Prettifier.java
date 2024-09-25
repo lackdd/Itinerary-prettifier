@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,9 +28,10 @@ public class Prettifier {
         }
         ArrayList<String[]> tokenLines = scanInput(input);
         ArrayList<String> processedLines = new ArrayList<>();
-        ArrayList<String[]> data = scanDatabase(database);
+        HashMap<String, Integer> columnMap = new HashMap<>();
+        ArrayList<String[]> data = scanDatabase(database, columnMap);
         for (String[] tokens : tokenLines) {
-            tokens = convertToAirportNames(tokens, data);
+            tokens = convertToAirportNames(tokens, data, columnMap);
             tokens = convertToReadableTime(tokens);
             processedLines.add(String.join(" ", tokens));
         }
@@ -173,7 +175,7 @@ public class Prettifier {
         return tokens;
     }
 
-    public static String[] convertToAirportNames(String[] tokens, ArrayList<String[]> data) {
+    public static String[] convertToAirportNames(String[] tokens, ArrayList<String[]> data, HashMap<String, Integer> columnMap) {
         if (tokens.length > 0) {
             for (int i = 0; i < tokens.length; i++) {
                 if (!tokens[i].isEmpty() && tokens[i].charAt(0) == '*') {
@@ -190,9 +192,11 @@ public class Prettifier {
                                 comma = true;
                                 tokens[i] = tokens[i].replace(",", "");
                             }
+                            int municipalityIndex = columnMap.get("municipality");
+                            int icaoIndex = columnMap.get("icao_code");
                             for (int k = 1; k < data.size(); k++) {
-                                if (tokens[i].equals(data.get(k)[3])) {
-                                    tokens[i] = data.get(k)[2];
+                                if (tokens[i].equals(data.get(k)[icaoIndex])) {
+                                    tokens[i] = data.get(k)[municipalityIndex];
                                     if (comma) {
                                         tokens[i] += ",";
                                     }
@@ -213,9 +217,11 @@ public class Prettifier {
                                 comma = true;
                                 tokens[i] = tokens[i].replace(",", "");
                             }
+                            int municipalityIndex = columnMap.get("municipality");
+                            int iataIndex = columnMap.get("iata_code");
                             for (int k = 1; k < data.size(); k++) {
-                                if (tokens[i].equals(data.get(k)[4])) {
-                                    tokens[i] = data.get(k)[2];
+                                if (tokens[i].equals(data.get(k)[iataIndex])) {
+                                    tokens[i] = data.get(k)[municipalityIndex];
                                     if (comma) {
                                         tokens[i] += ",";
                                     }
@@ -240,9 +246,11 @@ public class Prettifier {
                             comma = true;
                             tokens[i] = tokens[i].replace(",", "");
                         }
+                        int nameIndex = columnMap.get("name");
+                        int icaoIndex = columnMap.get("icao_code");
                         for (int k = 1; k < data.size(); k++) {
-                            if (tokens[i].equals(data.get(k)[3])) {
-                                tokens[i] = data.get(k)[0];
+                            if (tokens[i].equals(data.get(k)[icaoIndex])) {
+                                tokens[i] = data.get(k)[nameIndex];
                                 if (comma) {
                                     tokens[i] += ",";
                                 }
@@ -263,9 +271,11 @@ public class Prettifier {
                             comma = true;
                             tokens[i] = tokens[i].replace(",", "");
                         }
+                        int nameIndex = columnMap.get("name");
+                        int iataIndex = columnMap.get("iata_code");
                         for (int k = 1; k < data.size(); k++) {
-                            if (tokens[i].equals(data.get(k)[4])) {
-                                tokens[i] = data.get(k)[0];
+                            if (tokens[i].equals(data.get(k)[iataIndex])) {
+                                tokens[i] = data.get(k)[nameIndex];
                                 if (comma) {
                                     tokens[i] += ",";
                                 }
@@ -306,10 +316,17 @@ public class Prettifier {
         return tokenList;
     }
 
-    public static ArrayList<String[]> scanDatabase(String input) {
+    public static ArrayList<String[]> scanDatabase(String input, HashMap<String, Integer> columnMap) {
         ArrayList<String[]> data = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(new File(input))) {
+            if (scanner.hasNextLine()) {
+                String headerLine = scanner.nextLine();
+                String[] headers = headerLine.split(",");
+                for (int i = 0; i < headers.length; i++) {
+                    columnMap.put(headers[i].trim().toLowerCase(), i);
+                }
+            }
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 if (!line.isEmpty()) {
