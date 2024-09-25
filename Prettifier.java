@@ -33,13 +33,13 @@ public class Prettifier {
             tokens = convertToReadableTime(tokens);
             processedLines.add(String.join(" ", tokens));
         }
-        for (String line : processedLines) {
-            System.out.println(line);
-        }
         boolean isMalformed = isDatabaseMalformed(data);
         if (isMalformed == true) {
             System.out.println("Airport lookup malformed");
         } else {
+            for (String line : processedLines) {
+                System.out.println(line);
+            }
             writeToFile(output, processedLines);
         }
     }
