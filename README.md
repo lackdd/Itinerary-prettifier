@@ -2,8 +2,6 @@
 
 ### Itinerary-Prettifier
 
-#### Functional Requirements
-
 **Input:** Path to the input file containing the text-based itinerary.
 
 **Output:** Path to the output file where the prettified itinerary will be written.
@@ -50,8 +48,7 @@ $ java Prettifier.java ./input.txt ./output.txt ./airport-lookup.csv
     *   Prevents creation of output file on error conditions.
 6.  **Additional Features:**
     
-    *   Supports formatting enhancements for output to stdout (optional).
-    *   Highlights specific information like dates, times, offsets, airport names, and cities using color and formatting (optional).
+    *   Supports formatting enhancements for output to stdout.
 
 #### Example
 
