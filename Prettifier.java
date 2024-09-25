@@ -4,10 +4,13 @@ import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.IOException;
 
 public class Prettifier {
+    public static final String blue_bold = "\u001B[1;34m";
+    public static final String green_bold = "\u001B[1;32m";
+    public static final String red = "\u001B[31m";
+    public static final String reset = "\u001B[0m";
     public static void main(String[] args) {
         if ((args[0].equals("-h") && args.length > 0) || args.length != 3) {
             printUsage();
@@ -18,12 +21,12 @@ public class Prettifier {
         String database = args[2];
         File inputFile = new File(input);
         if (!inputFile.exists()) {
-            System.out.println("Input not found");
+            System.out.println(red + "Input not found" + reset);
             return;
         }
         File databaseFile = new File(database);
         if (!databaseFile.exists()) {
-            System.out.println("Airport lookup not found");
+            System.out.println(red + "Airport lookup not found" + reset);
             return;
         }
         ArrayList<String[]> tokenLines = scanInput(input);
@@ -37,18 +40,18 @@ public class Prettifier {
         }
         boolean isMalformed = isDatabaseMalformed(data);
         if (isMalformed == true) {
-            System.out.println("Airport lookup malformed");
+            System.out.println(red + "Airport lookup malformed" + reset);
         } else {
             for (String line : processedLines) {
-                System.out.println(line);
+                System.out.println(blue_bold + line + reset);
             }
             writeToFile(output, processedLines);
         }
     }
 
     private static void printUsage() {
-        System.out.println("itinerary usage:");
-        System.out.println("$ java Prettifier.java ./input.txt ./output.txt ./airport-lookup.csv");
+        System.out.println(green_bold + "itinerary usage:" + reset);
+        System.out.println(green_bold + "$ java Prettifier.java ./input.txt ./output.txt ./airport-lookup.csv" + reset);
     }
 
     public static String[] convertToReadableTime(String[] tokens) {
@@ -194,7 +197,7 @@ public class Prettifier {
                             }
                             int municipalityIndex = columnMap.get("municipality");
                             int icaoIndex = columnMap.get("icao_code");
-                            for (int k = 1; k < data.size(); k++) {
+                            for (int k = 0; k < data.size(); k++) {
                                 if (tokens[i].equals(data.get(k)[icaoIndex])) {
                                     tokens[i] = data.get(k)[municipalityIndex];
                                     if (comma) {
@@ -203,6 +206,7 @@ public class Prettifier {
                                     if (dot) {
                                         tokens[i] += ".";
                                     }
+                                    break;
                                 }
                             }
                         } else {
@@ -219,7 +223,7 @@ public class Prettifier {
                             }
                             int municipalityIndex = columnMap.get("municipality");
                             int iataIndex = columnMap.get("iata_code");
-                            for (int k = 1; k < data.size(); k++) {
+                            for (int k = 0; k < data.size(); k++) {
                                 if (tokens[i].equals(data.get(k)[iataIndex])) {
                                     tokens[i] = data.get(k)[municipalityIndex];
                                     if (comma) {
@@ -228,6 +232,7 @@ public class Prettifier {
                                     if (dot) {
                                         tokens[i] += ".";
                                     }
+                                    break;
                                 }
                             }
                         }
@@ -248,7 +253,7 @@ public class Prettifier {
                         }
                         int nameIndex = columnMap.get("name");
                         int icaoIndex = columnMap.get("icao_code");
-                        for (int k = 1; k < data.size(); k++) {
+                        for (int k = 0; k < data.size(); k++) {
                             if (tokens[i].equals(data.get(k)[icaoIndex])) {
                                 tokens[i] = data.get(k)[nameIndex];
                                 if (comma) {
@@ -257,6 +262,7 @@ public class Prettifier {
                                 if (dot) {
                                     tokens[i] += ".";
                                 }
+                                break;
                             }
                         }
                     } else {
@@ -273,7 +279,7 @@ public class Prettifier {
                         }
                         int nameIndex = columnMap.get("name");
                         int iataIndex = columnMap.get("iata_code");
-                        for (int k = 1; k < data.size(); k++) {
+                        for (int k = 0; k < data.size(); k++) {
                             if (tokens[i].equals(data.get(k)[iataIndex])) {
                                 tokens[i] = data.get(k)[nameIndex];
                                 if (comma) {
@@ -282,13 +288,14 @@ public class Prettifier {
                                 if (dot) {
                                     tokens[i] += ".";
                                 }
+                                break;
                             }
                         }
                     }
                 }
             }
         } else {
-            System.out.println("No data found in input.txt");
+            System.out.println(red + "No data found in input.txt" + reset);
         }
         return tokens;
     }
@@ -378,8 +385,6 @@ public class Prettifier {
             for (String line : content) {
                 writer.write(line + "\n");
             }
-            //String result = String.join("\n", content);
-            //writer.write(result);
         } catch (IOException e) {
             e.printStackTrace();
         }
