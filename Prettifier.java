@@ -13,7 +13,7 @@ public class Prettifier {
     public static final String reset = "\u001B[0m";
 
     public static void main(String[] args) {
-        if ((args[0].equals("-h") && args.length > 0) || args.length != 3) {
+        if ((args.length > 0 && args[0].equals("-h")) || args.length != 3) {
             printUsage();
             return;
         }
